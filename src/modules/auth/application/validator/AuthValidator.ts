@@ -2,6 +2,7 @@ import { LoginDTO } from "../dto/LoginDTO"
 import { RegisterDTO } from "../dto/RegisterDTO"
 import { ForgotPasswordDTO } from "../dto/ForgotPasswordDTO"
 import { VerifyOtpDTO } from "../dto/VerifyOtpDTO"
+import { ResetPasswordDTO } from "../dto/ResetPasswordDTO"
 
 export class AuthValidator {
 
@@ -42,7 +43,7 @@ export class AuthValidator {
 static validateForgotPassword(dto: ForgotPasswordDTO) {
 
   if (!dto.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email))
-    throw new Error("²Email invalid")
+    throw new Error("Email invalid")
 
 }
 
@@ -63,4 +64,19 @@ static validateVerifyOtp(dto: VerifyOtpDTO) {
 }
 
 
+  static validateResetPassword(dto: ResetPasswordDTO) {
+    const errors: string[] = []
+
+    if (!dto.otp)
+      errors.push("OTP requis")
+
+    if (!dto.password)
+      errors.push("Mot de passe requis")
+
+    if (dto.password && dto.password.length < 6)
+      errors.push("Mot de passe trop court")
+
+    if (errors.length)
+      throw new Error(errors.join(", "))
+  }
 }
