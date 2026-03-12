@@ -1,67 +1,67 @@
+
 import { CreateUserDTO } from "../dto/CreateUserDTO"
 import { UpdateUserDTO } from "../dto/UpdateUserDTO"
 
 export class UserValidator {
 
+  // Validation pour la création d'un utilisateur
   static validateCreate(dto: CreateUserDTO) {
-
     const errors: string[] = []
 
-    if (!dto.name || dto.name.length < 2)
-      errors.push("nom trop court")
+    if (!dto.name || dto.name.trim().length < 2) {
+      errors.push("Nom trop court")
+    }
 
-    if (!dto.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email))
-      errors.push("email invalide")
+    if (!dto.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email)) {
+      errors.push("Email invalide")
+    }
 
-    if (!dto.password || dto.password.length < 6)
-      errors.push("mot de passe trop court")
+    if (!dto.password || dto.password.length < 6) {
+      errors.push("Mot de passe trop court")
+    }
 
-    if (errors.length)
+    if (errors.length > 0) {
       throw new Error(errors.join(", "))
-
+    }
   }
 
+  // Validation pour la mise à jour d'un utilisateur
+  static validateUpdate(dto: UpdateUserDTO) {
+    const errors: string[] = []
 
+    if (!dto.id) {
+      errors.push("User ID est requis")
+    }
 
-  
+    if (dto.name && dto.name.trim().length < 2) {
+      errors.push("Nom trop court")
+    }
 
-// validation de donner mise à jour 
+    if (dto.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email)) {
+      errors.push("Email invalide")
+    }
 
-static validateUpdate(dto: UpdateUserDTO) {
+    if (dto.password && dto.password.length < 6) {
+      errors.push("Mot de passe trop court")
+    }
 
-  const errors: string[] = []
+    if (errors.length > 0) {
+      throw new Error(errors.join(", "))
+    }
+  }
 
-  if (!dto.id)
-    errors.push("user id est requis")
+  // Validation pour la suppression d'un utilisateur
+  static validateDelete(dto: { id: string }) {
+    if (!dto.id) {
+      throw new Error("User ID est requis")
+    }
+  }
 
-  if (dto.name && dto.name.length < 2)
-    errors.push("name trop court")
-
-  if (dto.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(dto.email))
-    errors.push("Invalid email")
-
-  if (errors.length)
-    throw new Error(errors.join(", "))
-}
-
-// validation des données delete 
-static validateDelete(dto: { id: string }) {
-
-  if (!dto.id)
-    throw new Error("User id est requis")
-
-}
-
-
-
-
-
-static validateGet(dto: { id: string }) {
-
-  if (!dto.id)
-    throw new Error("user id est requis") 
-
-}
+  // Validation pour la récupération d'un utilisateur
+  static validateGet(dto: { id: string }) {
+    if (!dto.id) {
+      throw new Error("User ID est requis")
+    }
+  }
 
 }
-
