@@ -15,7 +15,7 @@ export class GetUserUseCase {
   async execute(dto: GetUserDTO): Promise<User | null> {
 
     // Validation
-    UserValidator.validateGet({ id: dto.id! })
+    UserValidator.validateGet(dto)
 
     // Vérifier cache Redis
     const cachedUser = await redisClient.get(`user:${dto.id}`)

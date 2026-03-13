@@ -6,28 +6,34 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsc -p tsconfig.seed.json && node dist/prisma/seed.js"
   },
   "dependencies": {
-    "@prisma/client": "^7.4.2",
+    "@prisma/client": "4.15",
     "ioredis": "^5.10.0",
     "next": "16.1.6",
     "nodemailer": "^8.0.2",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "redis-server": "^1.2.2"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/ioredis": "^4.28.10",
-    "@types/node": "^20",
+    "@types/node": "^20.19.37",
     "@types/nodemailer": "^7.0.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
-    "prisma": "^7.4.2",
+    "prisma": "4.15",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

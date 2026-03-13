@@ -33,11 +33,11 @@ export class NodeMailerService {
         html,
       })
 
-      console.log(`Email sent to ${to}: ${info.messageId}`)
+      console.log(`email envoyé à${to}: ${info.messageId}`)
       return info
     } catch (err: any) {
-      console.error(`Failed to send email to ${to}: ${err.message}`)
-      throw new Error("Email could not be sent")
+      console.error(`echec de l'envoi de l'email à${to}: ${err.message}`)
+      throw new Error("Email n'a pas pu être envoyé")
     }
   }
 

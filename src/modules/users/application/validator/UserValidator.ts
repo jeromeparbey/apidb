@@ -1,6 +1,9 @@
 
 import { CreateUserDTO } from "../dto/CreateUserDTO"
 import { UpdateUserDTO } from "../dto/UpdateUserDTO"
+import { DeleteUserDto } from "../dto/DeleteUserDTO"
+import { GetUserDTO } from "../dto/GetUserDTO"
+
 
 export class UserValidator {
 
@@ -51,14 +54,14 @@ export class UserValidator {
   }
 
   // Validation pour la suppression d'un utilisateur
-  static validateDelete(dto: { id: string }) {
+  static validateDelete(dto:DeleteUserDto) {
     if (!dto.id) {
       throw new Error("User ID est requis")
     }
   }
 
   // Validation pour la récupération d'un utilisateur
-  static validateGet(dto: { id: string }) {
+  static validateGet(dto:GetUserDTO) {
     if (!dto.id) {
       throw new Error("User ID est requis")
     }

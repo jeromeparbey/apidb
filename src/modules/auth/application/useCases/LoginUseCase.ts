@@ -24,14 +24,14 @@ export class LoginUseCase {
       
      AuthValidator.validateLogin(dto)
 
-    const cachedOtp = await redisClient.get(`login:otp:${dto.email}`)
+    // const cachedOtp = await redisClient.get(`login:otp:${dto.email}`)
 
-    if (cachedOtp) {
-      return {
-        twoFactorRequired: true,
-        message: "Otp requis pour la connexion"
-      }
-    }
+    // if (cachedOtp) {
+    //   return {
+    //     twoFactorRequired: true,
+    //     message: "Otp requis pour la connexion"
+    //   }
+    // }
 
     const user = await this.repository.findUserByEmail(dto.email)
 
@@ -50,37 +50,37 @@ export class LoginUseCase {
 
     // ADMIN double authentification obligatoire
 
-    if (user.role === "ADMIN") {
+    // if (user.role === "ADMIN") {
 
-      const otp = this.otpService.generateOtp()
-      const expires = this.otpService.getExpirationDate()
+    //   const otp = this.otpService.generateOtp()
+    //   const expires = this.otpService.getExpirationDate()
 
-      await this.repository.createOtp(
-        user.id,
-        otp,
-        expires
-      )
+    //   await this.repository.createOtp(
+    //     user.id,
+    //     otp,
+    //     expires
+    //   )
 
-      await this.mailService.sendOtp(
-        user.email,
-        otp
-      )
+    //   // await this.mailService.sendOtp(
+    //   //   user.email,
+    //   //   otp
+    //   // )
 
-      await redisClient.set(
-        `login:otp:${user.id}`,
-        otp,
-        "EX",
-        300
-      )
+    //   // await redisClient.set(
+    //   //   `login:otp:${user.id}`,
+    //   //   otp,
+    //   //   "EX",
+    //   //   300
+    //   // )
 
-      this.logger.info("OTP à l'admin pour la connexion", { userId: user.id })
+    //   this.logger.info("OTP à l'admin pour la connexion", { userId: user.id })
 
-      return {
-        twoFactorRequired: true,
-        message: "Otp requis pour la connexion"
-      }
+    //   return {
+    //     twoFactorRequired: true,
+    //     message: "Otp requis pour la connexion"
+    //   }
 
-    }
+    // }
 
     const token = await this.jwtProvider.sign({
       id: user.id,
@@ -88,12 +88,12 @@ export class LoginUseCase {
       role: user.role
     })
 
-    await redisClient.set(
-      `session:${user.id}`,
-      token,
-      "EX",
-      3600
-    )
+    // await redisClient.set(
+    //   `session:${user.id}`,
+    //   token,
+    //   "EX",
+    //   3600
+    // )
 
     this.logger.info("Utilisateur connecté", { userId: user.id })
 

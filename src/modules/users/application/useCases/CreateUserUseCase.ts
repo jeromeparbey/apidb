@@ -42,17 +42,17 @@ export class CreateUserUseCase {
     const createdUser = await this.repository.create(user)
 
     //  Cache Redis (optimisation lecture)
-    await redisClient.set(
-      `user:${createdUser.id}`,
-      JSON.stringify({
-        id: createdUser.id,
-        name: createdUser.name,
-        email: createdUser.email,
-        role: createdUser.role
-      }),
-      "EX",
-      3600
-    )
+    // await redisClient.set(
+    //   `user:${createdUser.id}`,
+    //   JSON.stringify({
+    //     id: createdUser.id,
+    //     name: createdUser.name,
+    //     email: createdUser.email,
+    //     role: createdUser.role
+    //   }),
+    //   "EX",
+    //   3600
+    // )
 
     // 7️⃣ Logger
     this.logger.info("Utilisateur créé", {
