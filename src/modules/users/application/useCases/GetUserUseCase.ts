@@ -15,49 +15,48 @@ export class GetUserUseCase {
   async execute(dto: GetUserDTO): Promise<User | null> {
 
     // Validation
-    UserValidator.validateGet(dto)
+    // UserValidator.validateGet(dto)
 
     // Vérifier cache Redis
-    const cachedUser = await redisClient.get(`user:${dto.id}`)
+    // const cachedUser = await redisClient.get(`user:${dto.id}`)
 
-    if (cachedUser) {
+    // if (cachedUser) {
 
-      this.logger.info("Utilisateur récupéré depuis Redis", {
-        userId: dto.id
-      })
+    //   this.logger.info("Utilisateur récupéré depuis Redis", {
+    //     userId: dto.id
+    //   })
 
-      const parsedUser = JSON.parse(cachedUser)
+    //   const parsedUser = JSON.parse(cachedUser)
 
-      return new User({
-        id: parsedUser.id,
-        name: parsedUser.name,
-        email: parsedUser.email,
-        password: "",
-        role: parsedUser.role,
-        twoFactorEnabled: false
-      })
+    //   return new User({
+    //     id: parsedUser.id,
+    //     name: parsedUser.name,
+    //     email: parsedUser.email,
+    //     password: "",
+    //     role: parsedUser.role,
+    //     twoFactorEnabled: false
+    //   })
 
-    }
+    // }
 
     // Sinon récupérer en base
-    const user = await this.repository.findById(dto.id!)
+   if (!dto.id) throw new Error("Id requis pour récupérer un utilisateur");
+const user = await this.repository.findById(dto.id);
+if (!user) throw new Error("Utilisateur introuvable");
 
-    if (!user) {
-      throw new Error("Utilisateur introuvable")
-    }
 
-    // Mettre en cache Redis
-    await redisClient.set(
-      `user:${user.id}`,
-      JSON.stringify({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      }),
-      "EX",
-      3600
-    )
+    // // Mettre en cache Redis
+    // await redisClient.set(
+    //   `user:${user.id}`,
+    //   JSON.stringify({
+    //     id: user.id,
+    //     name: user.name,
+    //     email: user.email,
+    //     role: user.role
+    //   }),
+    //   "EX",
+    //   3600
+    // )
 
     // Logger
     this.logger.info("Utilisateur récupéré depuis la base", {

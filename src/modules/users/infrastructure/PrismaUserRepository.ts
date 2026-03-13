@@ -41,20 +41,23 @@ export class PrismaUserRepository implements IUserRepository {
 
   // Chercher un utilisateur par ID
   async findById(id: string): Promise<User | null> {
-    const prismaUser = await prisma.user.findUnique({
-      where: { id },
-      select: { id: true,
-         name: true,
-          email: true, 
-          password: true,
-           role: true, 
-           twoFactorEnabled: true,
-            twoFactorSecret: true,
-             createdAt: true, 
-             updatedAt: true }
-    });
-    return this.mapToEntity(prismaUser);
-  }
+  if (!id) return null;
+
+  const prismaUser = await prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true
+    }
+  });
+
+  if (!prismaUser) return null;
+  return this.mapToEntity(prismaUser);
+}
 
   //  Créer un utilisateur (hash du password déjà fait avant)
   async create(user: User): Promise<User> {
