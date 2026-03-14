@@ -12,7 +12,7 @@ export class RegisterUseCase {
     private logger: ConsoleLogger
   ) {}
 
-  async execute(dto: RegisterDTO): Promise<{ message: string }> {
+  async execute(dto: RegisterDTO): Promise<{ message: string }| { user: any }> {
      AuthValidator.validateRegister(dto)
 
     const existingUser = await this.repository.findUserByEmail(dto.email)
@@ -23,7 +23,7 @@ export class RegisterUseCase {
 
     const hashedPassword = await this.hashProvider.hash(dto.password)
 
-    await this.repository.createUser(
+    const createUser = await this.repository.createUser(
       dto.name,
       dto.email,
       hashedPassword
@@ -34,7 +34,8 @@ export class RegisterUseCase {
     })
 
     return {
-      message: "Utilisateur créé avec succès"
+      message: "Utilisateur créé avec succès" , 
+      user : createUser
     }
 
   }

@@ -50,17 +50,17 @@ export class UpdateUserUseCase {
     const savedUser = await this.repository.update(updatedUser)
 
     //  Mise à jour du cache Redis
-    await redisClient.set(
-      `user:${savedUser.id}`,
-      JSON.stringify({
-        id: savedUser.id,
-        name: savedUser.name,
-        email: savedUser.email,
-        role: savedUser.role
-      }),
-      "EX",
-      3600
-    )
+    // await redisClient.set(
+    //   `user:${savedUser.id}`,
+    //   JSON.stringify({
+    //     id: savedUser.id,
+    //     name: savedUser.name,
+    //     email: savedUser.email,
+    //     role: savedUser.role
+    //   }),
+    //   "EX",
+    //   3600
+    // )
 
     //  Logger
     this.logger.info("Utilisateur mis à jour", {

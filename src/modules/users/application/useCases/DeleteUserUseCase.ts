@@ -27,7 +27,7 @@ export class DeleteUserUseCase {
     await this.repository.delete(dto.id)
 
     //  Supprimer le cache Redis
-    await redisClient.del(`user:${dto.id}`)
+    // await redisClient.del(`user:${dto.id}`)
 
     // Logger
     this.logger.info("Utilisateur supprimé", {
